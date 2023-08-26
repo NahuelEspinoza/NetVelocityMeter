@@ -1,13 +1,11 @@
-﻿import speedtest
+import speedtest
 import click
-from colorama import init, Fore
 import time
 import csv
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 
-init(autoreset=True)  # Inicializar colorama
 sns.set(style="whitegrid")  # Configurar estilo para Seaborn
 
 @click.command()
@@ -76,6 +74,23 @@ def save_results_to_csv(measurements, output):
                 "Upload Speed (Mbps)": measurement["upload_speed"] / 1024 / 1024,
                 "Ping (ms)": measurement["ping"]
             })
+
+def print_speed_results(download_speed, upload_speed, ping, packet_loss, jitter, server):
+    print("Resultados de la prueba de velocidad:")
+    print(f"Descarga: {Fore.CYAN}{download_speed / 1024 / 1024:.2f} Mbps{Fore.RESET}")
+    print(f"Carga: {Fore.CYAN}{upload_speed / 1024 / 1024:.2f} Mbps{Fore.RESET}")
+    print(f"Ping: {Fore.CYAN}{ping:.2f} ms{Fore.RESET}")
+
+def print_speed_results_verbose(download_speed, upload_speed, ping, packet_loss, jitter, server):
+    print("Detalles de la prueba de velocidad:")
+    print(f"Descarga: {Fore.CYAN}{download_speed / 1024 / 1024:.2f} Mbps{Fore.RESET}")
+    print(f"Carga: {Fore.CYAN}{upload_speed / 1024 / 1024:.2f} Mbps{Fore.RESET}")
+    print(f"Ping: {Fore.CYAN}{ping:.2f} ms{Fore.RESET}")
+    print(f"Pérdida de paquetes: {Fore.CYAN}{packet_loss}%{Fore.RESET}")
+    print(f"Jitter: {Fore.CYAN}{jitter:.2f} ms{Fore.RESET}")
+    print(f"Proveedor de Internet: {Fore.CYAN}{server['sponsor']}{Fore.RESET}")
+    print(f"Ubicación del servidor: {Fore.CYAN}{server['name']}, {server['country']}{Fore.RESET}")
+    print(f"URL del servidor: {Fore.CYAN}{server['url']}{Fore.RESET}")
 
 def generate_speed_plot(measurements):
     data = {
